@@ -1,0 +1,32 @@
+{
+  "updated": "2026-08-15",
+  "demo": true,
+  "_source_note": "DEMO CONTENT — replace with Reson's real current snapshot later.",
+  "items": [
+    {
+      "label": "Building",
+      "value": "byreson.com"
+    },
+    {
+      "label": "Learning",
+      "value": "How to make complex software feel simple."
+    },
+    {
+      "label": "Watching",
+      "value": "Interstellar — revisiting ideas about space, time and people."
+    },
+    {
+      "label": "Playing",
+      "value": "Chess and trying to stop giving pieces away."
+    },
+    {
+      "label": "Training",
+      "value": "Running."
+    },
+    {
+      "label": "Thinking about",
+      "value": "How much of the internet we should actually own ourselves.",
+      "wide": true
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "title": "Building byreson.com without turning it into a tech demo",
+    "type": "Short note",
+    "topics": "Technology · Building",
+    "note": "One of the weird things about building a personal website is wanting to use everything you've learned while also wanting the final result to look like almost nothing is happening. That's becoming the rule here: complexity underneath, simplicity in front.",
+    "demo": true,
+    "_source_note": "DEMO CONTENT — replace with Reson's real technology note later."
+  }
+]

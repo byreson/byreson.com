@@ -1,0 +1,60 @@
+[
+  {
+    "id": "space",
+    "title": "Space",
+    "description": "Eclipses, distance, and the scale of the universe. I am not an astronomer. What interests me is what the numbers do to you once you take them seriously."
+  },
+  {
+    "id": "cinema",
+    "title": "Cinema",
+    "description": "Films and television that keep working on me after the screen goes dark. Usually it is one character or a single scene rather than the whole plot.",
+    "records": "cinema.json"
+  },
+  {
+    "id": "books",
+    "title": "Books",
+    "description": "Reading notes and lines worth carrying forward. This room is mostly empty so far, and I would rather it fill up slowly than pretend otherwise.",
+    "records": "books.json"
+  },
+  {
+    "id": "technology",
+    "title": "Technology",
+    "description": "Building software, taking things apart, and preferring systems I can still explain to myself. Also why this site is built the way it is.",
+    "records": "technology.json"
+  },
+  {
+    "id": "running",
+    "title": "Running",
+    "description": "Long distances, stubbornness, and bad planning. What interests me is what happens to your thinking somewhere past the point you prepared for.",
+    "records": "running.json"
+  },
+  {
+    "id": "chess",
+    "title": "Chess",
+    "description": "Patterns, mistakes, and the slow work of seeing one move further than last time. I am not good at it yet. That is most of the appeal.",
+    "records": "chess.json"
+  },
+  {
+    "id": "travel",
+    "title": "Travel",
+    "description": "Nepal and Australia, the coast, and long train rides. I care more about the journey and what I photographed than about a list of places.",
+    "records": "travel.json"
+  },
+  {
+    "id": "music",
+    "title": "Music",
+    "description": "An attempt to build something permanent instead of a stream of playlists I will not remember. Records go here as I actually keep them.",
+    "records": "music.json"
+  },
+  {
+    "id": "food",
+    "title": "Food",
+    "description": "Nepali food mostly, and the ongoing project of reproducing dishes at home well enough to recognise them. Momo, chow mein, curries, pav bhaji.",
+    "records": "food.json"
+  },
+  {
+    "id": "life",
+    "title": "Life",
+    "description": "Observations, changing opinions, and the things that do not fit under one heading. Nepal to Sydney, persistence, and ordinary moments worth keeping."
+  }
+]

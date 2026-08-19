@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="$lang">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#F8F7F3">
+    <meta name="description" content="$description">
+    <meta name="author" content="Rijan Pradhan">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="$title">
+    <meta property="og:description" content="$description">
+    <meta property="og:type" content="$og_type">
+    <meta property="og:url" content="$canonical">
+    <meta property="og:site_name" content="RESON">
+    <meta name="twitter:card" content="$twitter_card">
+    <meta name="twitter:title" content="$title">
+    <meta name="twitter:description" content="$description">
+    $social_meta
+    <link rel="canonical" href="$canonical">
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+    <link rel="alternate" type="application/rss+xml" title="RESON Writing" href="/rss.xml">
+    <link
+      rel="preload"
+      href="/assets/fonts/inter-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    >
+    $head_extra
+    <script>document.documentElement.classList.add("js");</script>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/content.css">
+    <script src="/script.js" defer></script>
+    $structured_data
+    <title>$title</title>
+  </head>
+
+  <body class="$body_class">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="brand" href="/" aria-label="RESON, home">
+          <span>RESON</span>
+        </a>
+
+        <nav class="site-nav" aria-label="Primary navigation">
+          <ul class="nav-list" id="nav-list">
+            <li><a href="/work/" data-nav-link$work_current>Work</a></li>
+            <li><a href="/writing/" data-nav-link$writing_current>Writing</a></li>
+            <li><a href="/explore/" data-nav-link$explore_current>Explore</a></li>
+            <li><a href="/about/" data-nav-link$about_current>About</a></li>
+          </ul>
+
+          <div class="nav-controls">
+            <button
+              class="menu-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="nav-list"
+            >
+              <span class="menu-label">Menu</span>
+              <span class="menu-icon" aria-hidden="true">
+                <span></span>
+                <span></span>
+              </span>
+            </button>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content">
+      $main
+    </main>
+
+    $footer
+  </body>
+</html>

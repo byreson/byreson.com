@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RESON Writing</title>
+    <link>https://byreson.com/writing/</link>
+    <description>What Reson has been thinking about.</description>
+    <language>en-au</language>
+    <atom:link href="https://byreson.com/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The sky feels different when something impossible happens</title>
+      <link>https://byreson.com/writing/the-sky-feels-different/</link>
+      <guid isPermaLink="true">https://byreson.com/writing/the-sky-feels-different/</guid>
+      <pubDate>Sat, 15 Aug 2026 00:00:00 +0000</pubDate>
+      <description>I&#x27;ve seen eclipses before, but there is something strange about watching daylight change because an object hundreds of thousands of kilometres away moved into exactly the right place.</description>
+    </item>
+    <item>
+      <title>Somewhere after 42 kilometres, the run changed</title>
+      <link>https://byreson.com/writing/after-42-kilometres/</link>
+      <guid isPermaLink="true">https://byreson.com/writing/after-42-kilometres/</guid>
+      <pubDate>Fri, 14 Aug 2026 00:00:00 +0000</pubDate>
+      <description>A reflection on how a long run becomes a series of smaller negotiations with yourself.</description>
+    </item>
+    <item>
+      <title>Why Interstellar keeps pulling me back</title>
+      <link>https://byreson.com/writing/why-interstellar-keeps-pulling-me-back/</link>
+      <guid isPermaLink="true">https://byreson.com/writing/why-interstellar-keeps-pulling-me-back/</guid>
+      <pubDate>Thu, 13 Aug 2026 00:00:00 +0000</pubDate>
+      <description>Why an enormous story about space stays grounded in a few human relationships.</description>
+    </item>
+  </channel>
+</rss>

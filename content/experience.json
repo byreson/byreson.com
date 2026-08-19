@@ -1,0 +1,42 @@
+{
+  "_source_note": "Verified against the private context document. No dates are recorded anywhere, so none are published. Do not add a title for Bupa or Bargains 2U — none is known.",
+  "roles": [
+    {
+      "title": "Software Development Intern",
+      "organisation": "Titan Capital",
+      "location": "Sydney",
+      "technology": true,
+      "note": "Built and integrated address autocomplete for a property information workflow, including the service layer between the application and external address and location providers.",
+      "project": "address-autocomplete"
+    },
+    {
+      "title": "Production Supervisor",
+      "organisation": "Andrews Meat Industries",
+      "location": "Sydney",
+      "technology": false,
+      "note": "Supervises and coordinates a production team working to production targets, covering workflow planning, machinery and process problems, and quality and process compliance."
+    },
+    {
+      "organisation": "Bupa",
+      "technology": false,
+      "note": "Administration and operational support: office systems, documentation, and structured workplace processes."
+    },
+    {
+      "organisation": "Bargains 2U",
+      "technology": false,
+      "note": "Store operations alongside IT and support tasks, digital systems, business development, and day-to-day operational problem solving."
+    }
+  ],
+  "education": [
+    {
+      "qualification": "Bachelor of Information Technology",
+      "institution": "Federation University Australia",
+      "note": "Studied through IIBIT Sydney."
+    },
+    {
+      "qualification": "ICT Professional Year",
+      "institution": "",
+      "note": "Completed in Australia."
+    }
+  ]
+}

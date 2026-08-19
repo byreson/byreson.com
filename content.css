@@ -1,0 +1,1475 @@
+/*
+  Phase Two editorial layer
+  Inter carries the identity and interface. Newsreader appears only where a
+  sustained reading rhythm is useful: article decks and article prose.
+*/
+
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/assets/fonts/inter-latin-variable.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Newsreader Variable";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("/assets/fonts/newsreader-latin-variable.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Newsreader Variable";
+  font-style: italic;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("/assets/fonts/newsreader-latin-italic-variable.woff2") format("woff2");
+}
+
+:root {
+  --font-sans: "Inter Variable", Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-reading: "Newsreader Variable", Newsreader, Georgia, "Times New Roman", serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --content-width: 46rem;
+  --type-page-title: clamp(2.4rem, 4.6vw, 4rem);
+  --type-section-title: clamp(1.75rem, 2.9vw, 2.6rem);
+  --type-reading: clamp(1.15rem, 1.15vw + 0.85rem, 1.34rem);
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+body {
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 14;
+}
+
+html {
+  scrollbar-color: var(--color-line-strong) transparent;
+}
+
+.nav-list a[aria-current="page"],
+.nav-list a[aria-current="location"] {
+  color: var(--color-text);
+}
+
+.nav-list a[aria-current="page"]::after,
+.nav-list a[aria-current="location"]::after {
+  transform: scaleX(1);
+}
+
+.text-link,
+.external-link {
+  text-decoration-color: var(--color-line-strong);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition: color 140ms ease, text-decoration-color 140ms ease;
+}
+
+.text-link:hover,
+.external-link:hover {
+  color: var(--color-accent-hover);
+  text-decoration-color: currentColor;
+}
+
+.external-link::after {
+  content: " ↗";
+  font-family: var(--font-sans);
+  font-size: 0.68em;
+  font-style: normal;
+  vertical-align: 0.22em;
+}
+
+/* Shared interior-page structure */
+.page-hero {
+  min-height: min(44rem, 74vh);
+  padding-top: clamp(10.5rem, 19vh, 13rem);
+  padding-bottom: clamp(4.5rem, 8vw, 7.5rem);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.page-kicker,
+.record-meta {
+  margin-bottom: clamp(1.6rem, 4vw, 3rem);
+  color: var(--color-accent);
+  font-size: 0.68rem;
+  font-weight: 780;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.page-hero h1,
+.article-header h1 {
+  max-width: 12ch;
+  margin-bottom: clamp(2rem, 4vw, 3.2rem);
+  font-size: var(--type-page-title);
+  font-weight: 570;
+  letter-spacing: -0.072em;
+  line-height: 0.91;
+}
+
+.page-dek,
+.article-dek {
+  max-width: 39rem;
+  margin-bottom: 0;
+  color: var(--color-muted);
+  font-size: clamp(1.06rem, 1.6vw, 1.3rem);
+  line-height: 1.62;
+}
+
+.page-section {
+  padding-top: clamp(3.2rem, 6.2vw, 5.5rem);
+  padding-bottom: var(--section-space);
+}
+
+.empty-state {
+  max-width: 46rem;
+  padding: clamp(2.2rem, 5vw, 4.5rem);
+  border: 1px solid var(--color-line);
+  background: var(--color-hover);
+}
+
+.empty-state h2 {
+  margin-bottom: 1rem;
+  font-size: var(--type-subheading);
+  font-weight: 580;
+  letter-spacing: -0.045em;
+  line-height: 1.04;
+}
+
+.empty-state > p:last-child {
+  max-width: 35rem;
+  margin-bottom: 0;
+  color: var(--color-muted);
+}
+
+/* Writing index and generated homepage list */
+.writing-year + .writing-year {
+  margin-top: clamp(5rem, 9vw, 8rem);
+}
+
+.writing-year > h2 {
+  margin-bottom: 1.6rem;
+  color: var(--color-muted);
+  font-size: 0.68rem;
+  font-weight: 760;
+  letter-spacing: 0.14em;
+}
+
+.writing-list,
+.home-writing-list {
+  border-top: 1px solid var(--color-line-strong);
+}
+
+.writing-row {
+  display: grid;
+  grid-template-columns: minmax(8.5rem, 0.7fr) minmax(14rem, 1.5fr) minmax(13rem, 1fr);
+  gap: clamp(1.25rem, 3vw, 3.5rem);
+  align-items: start;
+  padding-block: clamp(1.8rem, 3.5vw, 3.2rem);
+  border-bottom: 1px solid var(--color-line);
+  transition: background-color 140ms ease;
+}
+
+.writing-row:hover {
+  background: linear-gradient(90deg, transparent, var(--color-hover), transparent);
+}
+
+.writing-row.has-image {
+  grid-template-columns: minmax(7rem, 9rem) minmax(0, 1fr);
+  column-gap: clamp(1.25rem, 3vw, 2.5rem);
+}
+
+.writing-row.has-image .writing-row-image {
+  grid-row: 1 / -1;
+  grid-column: 1;
+}
+
+.writing-row.has-image .writing-row-meta,
+.writing-row.has-image h2,
+.writing-row.has-image > p {
+  grid-column: 2;
+}
+
+.writing-row-image img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--color-hover);
+}
+
+.writing-row-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  color: var(--color-muted);
+  font-size: 0.69rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.writing-row h2 {
+  margin-bottom: 0;
+  font-size: clamp(1.35rem, 2.3vw, 2.05rem);
+  font-weight: 590;
+  letter-spacing: -0.045em;
+  line-height: 1.08;
+}
+
+.writing-row h2 a {
+  transition: color 140ms ease;
+}
+
+.writing-row h2 a:hover {
+  color: var(--color-accent-hover);
+}
+
+.writing-row > p {
+  margin-bottom: 0;
+  color: var(--color-muted);
+  font-size: 0.92rem;
+  line-height: 1.68;
+}
+
+.home-writing-empty {
+  max-width: 56rem;
+}
+
+/* Phase Three indexes: editorial lists with strong hierarchy and very little chrome. */
+.featured-writing {
+  margin-bottom: clamp(4rem, 8vw, 7rem);
+  padding: clamp(2rem, 4vw, 3.75rem);
+  border: 1px solid var(--color-line-strong);
+  background: var(--color-surface);
+}
+
+.featured-writing > .eyebrow {
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+  color: var(--color-accent);
+}
+
+.featured-writing-inner {
+  display: grid;
+  grid-template-columns: minmax(16rem, 1.15fr) minmax(15rem, 0.85fr);
+  gap: clamp(2rem, 6vw, 6rem);
+  align-items: end;
+}
+
+.featured-writing h2 {
+  margin: 0;
+  font-size: clamp(2rem, 4.2vw, 4rem);
+  font-weight: 580;
+  letter-spacing: -0.06em;
+  line-height: 0.98;
+}
+
+.featured-writing h2 a,
+.work-index-row h2 a {
+  transition: color 140ms ease;
+}
+
+.featured-writing h2 a:hover,
+.work-index-row h2 a:hover {
+  color: var(--color-accent-hover);
+}
+
+.featured-writing-inner > div:last-child > p {
+  color: var(--color-muted);
+}
+
+.writing-topics-section {
+  margin-top: clamp(4rem, 8vw, 7rem);
+  padding-top: clamp(2rem, 4vw, 3.5rem);
+  border-top: 1px solid var(--color-line-strong);
+}
+
+.writing-topics {
+  display: flex;
+  margin-top: 1.5rem;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.writing-topics a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  padding-inline: 0.9rem;
+  align-items: center;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  color: var(--color-muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: border-color 140ms ease, color 140ms ease;
+}
+
+.writing-topics a:hover {
+  border-color: var(--color-accent-hover);
+  color: var(--color-accent-hover);
+}
+
+.latest-writing > .eyebrow {
+  margin-bottom: 1.5rem;
+  color: var(--color-accent);
+}
+
+/*
+  Work index: an employer scans this. Screenshot first where one exists,
+  then title, summary, the technologies that project actually used, and
+  every way to inspect it. Text-only projects stay equally deliberate.
+*/
+.work-index-list {
+  border-top: 1px solid var(--color-line-strong);
+}
+
+.work-index-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.5rem, 3.5vw, 3rem);
+  padding-block: clamp(2.5rem, 5vw, 4.25rem);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.work-index-row.has-screenshot {
+  align-items: start;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+}
+
+.work-index-visual:empty {
+  display: none;
+}
+
+.work-index-visual .project-screenshot {
+  margin: 0;
+}
+
+.work-index-number {
+  margin: 0 0 0.9rem;
+  color: var(--color-accent);
+  font-size: 0.68rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+
+.work-index-row .record-meta {
+  margin-bottom: 0.75rem;
+  color: var(--color-muted);
+}
+
+.work-index-row h2 {
+  margin-bottom: 0.9rem;
+  font-size: var(--type-subheading);
+  font-weight: 580;
+  letter-spacing: -0.045em;
+  line-height: 1.04;
+}
+
+.work-index-summary {
+  max-width: 44ch;
+  margin-bottom: 1.25rem;
+  color: var(--color-muted);
+}
+
+.work-index-tech {
+  display: flex;
+  margin-bottom: 1.5rem;
+  gap: 0.35rem 0.9rem;
+  flex-wrap: wrap;
+  color: var(--color-muted);
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.work-index-tech li + li::before {
+  margin-right: 0.9rem;
+  color: var(--color-line-strong);
+  content: "/";
+}
+
+.work-index-actions {
+  display: flex;
+  gap: 0.25rem 2rem;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+.work-index-actions a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+}
+
+.work-technologies {
+  margin-top: clamp(3.5rem, 7vw, 6rem);
+  padding-top: clamp(2rem, 4vw, 3.25rem);
+  border-top: 1px solid var(--color-line-strong);
+}
+
+.work-technologies > .eyebrow {
+  margin-bottom: 1rem;
+  color: var(--color-muted);
+}
+
+.work-technologies h2 {
+  max-width: 20ch;
+  margin-bottom: 1.75rem;
+  font-size: var(--type-subheading);
+  font-weight: 570;
+  letter-spacing: -0.045em;
+  line-height: 1.04;
+}
+
+.technology-cloud {
+  display: flex;
+  gap: 0.6rem 1.4rem;
+  flex-wrap: wrap;
+  color: var(--color-text);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.technology-cloud li + li::before {
+  margin-right: 1.4rem;
+  color: var(--color-line-strong);
+  content: "/";
+}
+
+/*
+  Experience sits below projects and reads quieter than them on purpose:
+  projects are the evidence, experience is the context around it.
+*/
+.experience-block {
+  margin-top: clamp(3.5rem, 7vw, 6rem);
+  padding-top: clamp(2rem, 4vw, 3.25rem);
+  border-top: 1px solid var(--color-line-strong);
+}
+
+.experience-block > .eyebrow {
+  margin-bottom: 1rem;
+  color: var(--color-muted);
+}
+
+.experience-block > h2 {
+  max-width: 20ch;
+  margin-bottom: 1.75rem;
+  font-size: var(--type-subheading);
+  font-weight: 570;
+  letter-spacing: -0.045em;
+  line-height: 1.04;
+}
+
+.experience-list {
+  border-top: 1px solid var(--color-line);
+}
+
+.experience-row {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(0.75rem, 3vw, 3rem);
+  padding-block: clamp(1.5rem, 3vw, 2.5rem);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.experience-row h3 {
+  margin-bottom: 0;
+  font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+}
+
+.experience-row .record-meta {
+  margin-bottom: 0.3rem;
+}
+
+.experience-row p {
+  margin-bottom: 0;
+  color: var(--color-muted);
+  font-size: 0.94rem;
+  line-height: 1.7;
+}
+
+.experience-row .text-link {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+/*
+  About earns a portrait beside its copy. Without one the copy simply keeps
+  its natural measure, so the layout never depends on a photograph existing.
+*/
+.page-with-portrait.has-portrait {
+  display: grid;
+  align-items: start;
+  grid-template-columns: minmax(15rem, 0.62fr) minmax(0, 1fr);
+  gap: clamp(2.5rem, 6vw, 5.5rem);
+}
+
+.page-portrait {
+  margin: 0;
+  position: sticky;
+  top: calc(var(--header-height) + 2rem);
+}
+
+.page-portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  background: var(--color-hover);
+}
+
+.page-portrait figcaption {
+  margin-top: 0.8rem;
+  color: var(--color-muted);
+  font-size: var(--type-meta);
+  font-weight: 680;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.editorial-page-copy {
+  width: min(100%, 50rem);
+  font-size: clamp(1.1rem, 1.3vw, 1.28rem);
+  line-height: 1.75;
+}
+
+.editorial-page-copy p {
+  margin-bottom: 1.6em;
+}
+
+.editorial-page-copy p:first-child {
+  color: var(--color-text);
+  font-size: clamp(1.4rem, 2.6vw, 2.15rem);
+  letter-spacing: -0.035em;
+  line-height: 1.45;
+}
+
+.editorial-page-copy p:last-child {
+  margin-bottom: 0;
+  color: var(--color-muted);
+}
+
+.project-context {
+  margin-top: 2rem;
+  color: var(--color-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Long-form reading */
+.article-page,
+.project-page {
+  padding-top: var(--header-height);
+}
+
+.article-header {
+  padding-top: clamp(5rem, 10vw, 9rem);
+  padding-bottom: clamp(3rem, 7vw, 6rem);
+}
+
+.article-header h1 {
+  max-width: 15ch;
+}
+
+.article-dek {
+  max-width: 43rem;
+}
+
+.article-route .article-dek {
+  font-family: var(--font-reading);
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 36;
+  line-height: 1.5;
+}
+
+.topic-chips,
+.technology-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.topic-chips a,
+.topic-chips span,
+.technology-list li {
+  padding: 0.42rem 0.72rem;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  color: var(--color-muted);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.topic-chips a {
+  transition: border-color 140ms ease, color 140ms ease;
+}
+
+.topic-chips a:hover {
+  border-color: var(--color-accent-hover);
+  color: var(--color-accent-hover);
+}
+
+.article-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1.5rem;
+  margin-top: 2rem;
+  color: var(--color-muted);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Width comes from .media-shell; this only owns rhythm and cropping. */
+.article-lead-image {
+  margin: 0 auto clamp(3.5rem, 7vw, 6rem);
+}
+
+.article-lead-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 75vh;
+  object-fit: cover;
+  background: var(--color-hover);
+}
+
+.project-screenshot {
+  margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+}
+
+/*
+  Screenshots are contained, not cropped: a UI capture loses its meaning if
+  the edges are cut off, so this uses object-fit: contain on a light surface.
+*/
+.project-screenshot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 70vh;
+  object-fit: contain;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+}
+
+.project-screenshot-frame {
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.project-screenshot-frame .project-screenshot {
+  margin-bottom: 0;
+}
+
+.article-prose,
+.project-prose {
+  width: min(100%, var(--content-width));
+  padding-bottom: clamp(4.5rem, 8vw, 7rem);
+}
+
+.article-prose {
+  font-family: var(--font-reading);
+  font-size: var(--type-reading);
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 30;
+  line-height: 1.78;
+}
+
+.article-prose p,
+.article-prose ul,
+.article-prose ol,
+.article-prose blockquote,
+.project-prose p,
+.project-prose ul,
+.project-prose ol {
+  margin-block: 0 1.55em;
+}
+
+.article-prose h2,
+.article-prose h3,
+.article-prose h4,
+.project-prose h2,
+.project-prose h3,
+.project-prose h4 {
+  margin-block: 2.3em 0.72em;
+  font-family: var(--font-sans);
+  font-weight: 620;
+  letter-spacing: -0.038em;
+  line-height: 1.16;
+}
+
+.article-prose h2,
+.project-prose h2 {
+  font-size: clamp(1.8rem, 4vw, 2.65rem);
+}
+
+.article-prose h3,
+.project-prose h3 {
+  font-size: clamp(1.45rem, 3vw, 1.9rem);
+}
+
+.article-prose ul,
+.article-prose ol,
+.project-prose ul,
+.project-prose ol {
+  padding-left: 1.4em;
+}
+
+.article-prose li + li,
+.project-prose li + li {
+  margin-top: 0.5em;
+}
+
+.article-prose blockquote {
+  margin-inline: 0;
+  padding: 0.4rem 0 0.4rem clamp(1.2rem, 4vw, 2.2rem);
+  border-left: 2px solid var(--color-accent);
+  color: var(--color-muted);
+  font-size: 1.13em;
+  font-style: italic;
+}
+
+.article-prose blockquote p {
+  margin-bottom: 0;
+}
+
+.article-prose hr,
+.project-prose hr {
+  width: 4rem;
+  margin-block: 3.7rem;
+  border: 0;
+  border-top: 1px solid var(--color-line-strong);
+}
+
+.article-prose img,
+.project-prose img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.article-prose figure,
+.project-prose figure {
+  margin: 2.5rem 0;
+}
+
+/*
+  Inline article media. Normal media sits at prose width; wide media breaks out
+  to the same media width the homepage photograph uses. The prose column is
+  centred, so a wide figure centres on the viewport by offsetting from its
+  parent's midpoint. No cards, borders, or shadows: it is editorial photography
+  inside a piece of writing.
+*/
+.article-media {
+  margin-block: clamp(2rem, 4vw, 3rem);
+}
+
+.article-media img,
+.article-media video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  background: var(--color-hover);
+}
+
+.article-media figcaption {
+  margin-top: 0.7rem;
+  color: var(--color-muted);
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.article-prose .media-wide {
+  width: min(var(--media-width), calc(100vw - (2 * var(--gutter))));
+  max-width: none;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+.video-embed {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--color-hover);
+}
+
+.video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.article-prose figcaption,
+.project-prose figcaption {
+  margin-top: 0.7rem;
+  color: var(--color-muted);
+  font-family: var(--font-sans);
+  font-size: 0.73rem;
+  line-height: 1.5;
+}
+
+.article-prose code,
+.project-prose code {
+  padding: 0.14em 0.35em;
+  border-radius: 0.22rem;
+  background: var(--color-surface);
+  font-family: var(--font-mono);
+  font-size: 0.78em;
+}
+
+.article-prose pre,
+.project-prose pre {
+  max-width: 100%;
+  margin-block: 2.2rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  overflow-x: auto;
+  border: 1px solid var(--color-line);
+  background: var(--color-surface);
+  line-height: 1.58;
+  tab-size: 2;
+}
+
+.article-prose pre code,
+.project-prose pre code {
+  padding: 0;
+  background: transparent;
+  font-size: 0.78rem;
+}
+
+.article-prose a:visited {
+  color: color-mix(in srgb, var(--color-accent) 63%, var(--color-muted));
+}
+
+.article-after {
+  padding-bottom: var(--section-space);
+}
+
+.related-writing {
+  margin-bottom: 3rem;
+  padding-top: clamp(3rem, 7vw, 5rem);
+  border-top: 1px solid var(--color-line-strong);
+}
+
+.related-writing > h2,
+.module-writing > h2 {
+  margin-bottom: 2.5rem;
+  font-size: var(--type-section-title);
+  font-weight: 570;
+  letter-spacing: -0.06em;
+  line-height: 0.98;
+}
+
+.comments-section {
+  padding-top: clamp(3rem, 7vw, 5rem);
+  padding-bottom: clamp(4rem, 8vw, 7rem);
+  border-top: 1px solid var(--color-line-strong);
+}
+
+.comments-section h2 {
+  margin-bottom: 2rem;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 580;
+  letter-spacing: -0.045em;
+}
+
+/* Explore is an editorial map, not a grid of empty product cards. */
+.explore-photos {
+  display: flex;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+  flex-wrap: wrap;
+}
+
+.explore-photos figure {
+  min-width: 12rem;
+  flex: 1 1 16rem;
+  margin: 0;
+}
+
+.explore-photos img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--color-hover);
+}
+
+.explore-photos figcaption {
+  margin-top: 0.6rem;
+  color: var(--color-muted);
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.explore-list {
+  border-top: 1px solid var(--color-line-strong);
+}
+
+.explore-row {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.9fr) minmax(15rem, 1.45fr) minmax(9rem, 0.6fr);
+  scroll-margin-top: calc(var(--header-height) + 1rem);
+  gap: clamp(1.3rem, 4vw, 4rem);
+  align-items: start;
+  padding-block: clamp(2rem, 4vw, 3.6rem);
+  border-bottom: 1px solid var(--color-line);
+}
+
+/*
+  A topic with no description yet keeps a two-column row instead of leaving
+  an empty middle cell, so a quiet room reads as deliberate, not broken.
+*/
+.explore-row.no-description {
+  grid-template-columns: minmax(12rem, 1fr) minmax(9rem, 0.6fr);
+}
+
+.explore-name {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.65rem;
+  align-items: baseline;
+}
+
+.explore-name > span {
+  color: var(--color-accent);
+  font-size: 0.65rem;
+  font-weight: 760;
+  letter-spacing: 0.08em;
+}
+
+.explore-name h2 {
+  margin-bottom: 0;
+  font-size: clamp(1.45rem, 2.4vw, 2.15rem);
+  font-weight: 590;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.explore-row > p,
+.record-row p {
+  margin-bottom: 0;
+  color: var(--color-muted);
+  font-size: 0.91rem;
+}
+
+.explore-action {
+  justify-self: end;
+  font-size: 0.69rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.explore-action a {
+  transition: color 140ms ease;
+}
+
+.explore-action a:hover {
+  color: var(--color-accent-hover);
+}
+
+.module-empty {
+  color: var(--color-muted);
+}
+
+.module-records {
+  border-top: 1px solid var(--color-line-strong);
+}
+
+.record-row {
+  display: grid;
+  grid-template-columns: minmax(13rem, 0.9fr) minmax(15rem, 1.1fr);
+  gap: clamp(1.5rem, 5vw, 5rem);
+  padding-block: clamp(2rem, 4vw, 3.5rem);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.record-meta {
+  margin-bottom: 0.5rem;
+}
+
+.record-row h2 {
+  margin-bottom: 0;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 590;
+  letter-spacing: -0.045em;
+}
+
+.record-row .text-link {
+  display: inline-block;
+  margin-top: 1rem;
+  font-size: 0.73rem;
+}
+
+.module-writing {
+  margin-top: clamp(5rem, 10vw, 9rem);
+}
+
+.project-route .article-dek,
+.project-prose {
+  font-family: var(--font-sans);
+}
+
+.technology-list {
+  margin-top: 2rem;
+}
+
+/* The shared 404 also opts into the local interface font. */
+.error-page .error-content {
+  padding-top: clamp(7rem, 18vh, 12rem);
+}
+
+@media (max-width: 58rem) {
+  .writing-row {
+    grid-template-columns: minmax(8rem, 0.55fr) minmax(15rem, 1.45fr);
+  }
+
+  .writing-row > p {
+    grid-column: 2;
+  }
+
+  .explore-row {
+    grid-template-columns: minmax(11rem, 0.7fr) minmax(15rem, 1.3fr);
+  }
+
+  .featured-writing-inner,
+  .work-index-row.has-screenshot {
+    grid-template-columns: 1fr;
+  }
+
+  .page-with-portrait.has-portrait {
+    grid-template-columns: 1fr;
+  }
+
+  .page-portrait {
+    position: static;
+    max-width: 22rem;
+  }
+
+  .explore-action {
+    grid-column: 2;
+    justify-self: start;
+    text-align: left;
+  }
+
+  .explore-row.no-description .explore-action {
+    grid-column: auto;
+    justify-self: end;
+    text-align: right;
+  }
+}
+
+@media (max-width: 44rem) {
+  :root {
+    --type-page-title: clamp(2.75rem, 14vw, 5rem);
+    --type-reading: clamp(1.11rem, 4.6vw, 1.24rem);
+  }
+
+  .page-hero {
+    min-height: auto;
+    padding-top: 9.5rem;
+  }
+
+  .page-hero h1,
+  .article-header h1 {
+    max-width: 100%;
+    letter-spacing: -0.06em;
+  }
+
+  .writing-row,
+  .explore-row,
+  .explore-row.no-description,
+  .record-row,
+  .experience-row {
+    grid-template-columns: 1fr;
+  }
+
+  .explore-row.no-description .explore-action {
+    justify-self: start;
+    text-align: left;
+  }
+
+  .featured-writing-inner {
+    gap: 1.5rem;
+  }
+
+  .writing-row {
+    gap: 0.8rem;
+  }
+
+  .writing-row > p,
+  .explore-action {
+    grid-column: auto;
+  }
+
+  .writing-row-meta {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.9rem;
+  }
+
+  .writing-row h2 {
+    margin-top: 0.4rem;
+  }
+
+  .writing-row.has-image {
+    grid-template-columns: 1fr;
+  }
+
+  .writing-row.has-image .writing-row-image {
+    grid-row: auto;
+    grid-column: auto;
+    margin-bottom: 0.8rem;
+  }
+
+  .writing-row.has-image .writing-row-meta,
+  .writing-row.has-image h2,
+  .writing-row.has-image > p {
+    grid-column: auto;
+  }
+
+  .explore-row {
+    gap: 1rem;
+  }
+
+  .article-header {
+    padding-top: 4rem;
+  }
+
+  .article-dates {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .article-prose,
+  .project-prose {
+    line-height: 1.72;
+  }
+
+}
+
+@media (forced-colors: active) {
+  .topic-chips a,
+  .topic-chips span,
+  .technology-list li {
+    border-color: CanvasText;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .writing-row,
+  .writing-row h2 a,
+  .explore-action a,
+  .topic-chips a,
+  .text-link,
+  .external-link {
+    transition: none;
+  }
+}
+
+/* Phase Four: flatter editorial pages and quieter metadata. */
+.page-hero {
+  min-height: 0;
+  padding-top: clamp(7.5rem, 13vh, 9.5rem);
+  padding-bottom: clamp(3.1rem, 5.5vw, 4.75rem);
+  border-bottom-color: var(--color-line-strong);
+}
+
+.page-hero h1,
+.article-header h1 {
+  max-width: 16ch;
+  font-size: clamp(2.4rem, 4.6vw, 4rem);
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.article-header h1 {
+  max-width: 20ch;
+}
+
+.page-kicker,
+.record-meta {
+  color: var(--color-muted);
+}
+
+.page-dek-row {
+  display: flex;
+  max-width: 50rem;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.context-link {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 0.35rem;
+  border-bottom: 1px solid var(--color-line-strong);
+  font-size: 0.68rem;
+  font-weight: 720;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  transition: border-color 140ms ease, color 140ms ease;
+}
+
+.context-link:hover {
+  border-color: var(--color-accent-hover);
+  color: var(--color-accent-hover);
+}
+
+.work-role {
+  max-width: 42ch;
+  margin: 1.75rem 0 0;
+  color: var(--color-text);
+  font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+  line-height: 1.6;
+}
+
+/*
+  An employer arrives here from a job application, so the two things they
+  came for read as actions, not as another line of editorial prose.
+*/
+.work-actions {
+  display: flex;
+  margin-top: 2.25rem;
+  gap: 0.9rem 1rem;
+  flex-wrap: wrap;
+}
+
+.work-cta {
+  display: inline-flex;
+  min-height: 2.9rem;
+  padding-inline: 1.4rem;
+  align-items: center;
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  font-size: 0.76rem;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.work-cta-primary {
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+}
+
+.work-cta-primary:hover {
+  border-color: var(--color-accent-hover);
+  background: var(--color-accent-hover);
+  color: var(--color-accent-contrast);
+}
+
+.work-cta-secondary:hover {
+  border-color: var(--color-accent-hover);
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+}
+
+.work-links {
+  display: flex;
+  margin-top: 1.5rem;
+  gap: 0.85rem 1.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.work-links a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+}
+
+.empty-state {
+  max-width: 42rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.featured-writing {
+  margin-bottom: clamp(5rem, 9vw, 8rem);
+  padding: 0 0 clamp(4rem, 7vw, 6rem);
+  border: 0;
+  border-bottom: 1px solid var(--color-line-strong);
+  background: transparent;
+}
+
+.featured-writing > .eyebrow {
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  color: var(--color-muted);
+}
+
+.featured-writing h2 {
+  max-width: 20ch;
+  font-size: var(--type-lead);
+  letter-spacing: -0.05em;
+  line-height: 1.02;
+}
+
+.writing-row:hover {
+  background: transparent;
+}
+
+.writing-topics {
+  gap: 0.6rem 1.2rem;
+}
+
+.writing-topics a {
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: var(--color-line-strong);
+  text-underline-offset: 0.24em;
+}
+
+.writing-topics a:hover {
+  color: var(--color-accent-hover);
+  text-decoration-color: currentColor;
+}
+
+.topic-chips,
+.technology-list {
+  gap: 0.45rem 0.8rem;
+}
+
+.topic-chips a,
+.topic-chips span,
+.technology-list li {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+.topic-chips > * + *::before,
+.technology-list > * + *::before {
+  margin-right: 0.8rem;
+  color: var(--color-line-strong);
+  content: "/";
+}
+
+.article-header {
+  padding-top: clamp(4rem, 8vw, 7rem);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.article-dates {
+  margin-top: 1.5rem;
+}
+
+.article-prose,
+.project-prose {
+  padding-bottom: clamp(5rem, 9vw, 8rem);
+}
+
+.related-writing {
+  margin-bottom: 0;
+}
+
+.now-page .now-grid {
+  display: block;
+  border-top: 1px solid var(--color-line-strong);
+  border-left: 0;
+}
+
+.now-page .now-item,
+.now-page .now-item-wide {
+  display: grid;
+  min-height: 0;
+  padding: clamp(1.8rem, 3.5vw, 3rem) 0;
+  border-right: 0;
+  border-bottom: 1px solid var(--color-line);
+  grid-template-columns: minmax(8rem, 0.45fr) minmax(0, 1.55fr);
+  gap: 2rem;
+}
+
+.now-page .now-item dt {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.now-page .now-item dd {
+  max-width: 45rem;
+  font-size: clamp(1.35rem, 2.8vw, 2.35rem);
+  line-height: 1.15;
+}
+
+.editorial-page-copy h3 {
+  margin: 2.5em 0 0.75em;
+  font-size: clamp(1.45rem, 2.5vw, 2rem);
+  font-weight: 620;
+  letter-spacing: -0.035em;
+}
+
+.editorial-page-copy a {
+  text-decoration: underline;
+  text-decoration-color: var(--color-line-strong);
+  text-underline-offset: 0.22em;
+}
+
+.editorial-page-copy a:hover {
+  color: var(--color-accent-hover);
+  text-decoration-color: currentColor;
+}
+
+@media (max-width: 44rem) {
+  .page-hero {
+    padding-top: 7.25rem;
+    padding-bottom: 3.25rem;
+  }
+
+  .page-hero h1,
+  .article-header h1 {
+    font-size: clamp(2.8rem, 13.5vw, 4.8rem);
+  }
+
+  .page-dek-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .now-page .now-item,
+  .now-page .now-item-wide {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+}
